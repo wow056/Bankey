@@ -19,6 +19,7 @@
 /* Begin PBXFileReference section */
 		7115ED56288B902D00468458 /* OnboardingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerViewController.swift; sourceTree = "<group>"; };
 		7115ED73288BB6D000468458 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
+		7115ED75288BBAE000468458 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		714D67B0288A936A0076ABD7 /* Bankey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bankey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		714D67B3288A936A0076ABD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		714D67B7288A936A0076ABD7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +52,7 @@
 		714D67A7288A936A0076ABD7 = {
 			isa = PBXGroup;
 			children = (
+				7115ED75288BBAE000468458 /* README.md */,
 				714D67B2288A936A0076ABD7 /* Bankey */,
 				714D67B3288A936A0076ABD7 /* AppDelegate.swift */,
 				714D67B1288A936A0076ABD7 /* Products */,
