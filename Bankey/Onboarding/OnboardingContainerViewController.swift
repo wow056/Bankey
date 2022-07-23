@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol OnboardingContainerViewControllerDelegate : AnyObject {
+    func didFinishOnboarding()
+}
+
 class OnboardingContainerViewController: UIViewController {
 
     let pageViewController: UIPageViewController
@@ -16,9 +20,14 @@ class OnboardingContainerViewController: UIViewController {
         didSet {
         }
     }
+    let closeButton = UIButton(type: .system)
+    let doneButton = UIButton(type: .system)
+    
+    weak var delegate : OnboardingContainerViewControllerDelegate?
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        
         
         let page1 = OnBoardingViewController(heroImageName: "delorean", titleText: "Bankey is faster, easier to use, and has a brand new look and feel that will make you feel like you are back in 1989.")
         let page2 = OnBoardingViewController(heroImageName: "world", titleText: "Move your money around the world quickly and securely.")
@@ -40,6 +49,13 @@ class OnboardingContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setup()
+        style()
+        layout()
+        
+    }
+    
+    private func setup() {
         view.backgroundColor = .systemIndigo
         
         addChild(pageViewController)
@@ -47,6 +63,7 @@ class OnboardingContainerViewController: UIViewController {
         pageViewController.didMove(toParent: self)
         
         pageViewController.dataSource = self
+        pageViewController.delegate = self
         pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -58,6 +75,32 @@ class OnboardingContainerViewController: UIViewController {
         
         pageViewController.setViewControllers([pages.first!], direction: .forward, animated: false, completion: nil)
         currentVC = pages.first!
+    }
+    
+    private func style() {
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.setTitle("Close", for: [])
+        closeButton.addTarget(self, action: #selector(closeTapped), for: .primaryActionTriggered)
+        
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.setTitle("Done", for: [])
+        doneButton.addTarget(self, action: #selector(doneTapped), for: .primaryActionTriggered)
+        doneButton.isHidden = true
+        
+        view.addSubview(closeButton)
+        view.addSubview(doneButton)
+    }
+    
+    private func layout() {
+        NSLayoutConstraint.activate([
+            closeButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            closeButton.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 2)
+        ])
+        
+        NSLayoutConstraint.activate([
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: doneButton.trailingAnchor, multiplier: 2),
+            doneButton.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 2)
+        ])
     }
 }
 
@@ -90,5 +133,26 @@ extension OnboardingContainerViewController: UIPageViewControllerDataSource {
 
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         return pages.firstIndex(of: self.currentVC) ?? 0
+    }
+}
+
+extension OnboardingContainerViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        if pendingViewControllers.first == pages.last {
+            doneButton.isHidden = false
+        } else {
+            doneButton.isHidden = true
+        }
+    }
+}
+
+
+extension OnboardingContainerViewController {
+    @objc func closeTapped (_ sender :UIButton) {
+        delegate?.didFinishOnboarding()
+    }
+    
+    @objc func doneTapped (_ sender :UIButton) {
+        delegate?.didFinishOnboarding()
     }
 }
